@@ -1,13 +1,11 @@
-package com.example.masterRobot;
+package com.example.masterRobot.service;
 
+import com.example.masterRobot.entity.store_items;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.DayOfWeek;
 import java.util.List;
 
 @Service
@@ -38,6 +36,7 @@ public class storeItemsService {
 
         List<store_items> listItems = jdbcTemplate.query(sql,
                 BeanPropertyRowMapper.newInstance(store_items.class));
+        System.out.println("store_items service "+listItems);
         return listItems;
         }
 }

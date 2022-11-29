@@ -1,6 +1,5 @@
-package com.example.masterRobot;
+package com.example.masterRobot.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,7 +8,6 @@ import javax.persistence.Table;
 @Table(name="store_items")
 public class store_items {
     @Id
-
     private long item_id;
     private long price;
     private int number_of_copies;

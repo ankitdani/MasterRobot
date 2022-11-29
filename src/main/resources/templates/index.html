@@ -14,18 +14,57 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>price</th>
+            <th>Title</th>
+            <th>Published Date</th>
+            <th>Studio name</th>
+            <th>Description</th>
             <th>Number of copies</th>
+            <th>Price</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="store_items : ${listItems}">
-            <td th:text="${store_items.item_id}">ID</td>
-            <td th:text="${store_items.price}">Item Name</td>
-            <td th:text="${store_items.number_of_copies}">Quantity</td>
+        <tr th:each="itemDetails : ${itemDetailsList}">
+            <td th:text="${itemDetails.store_item.item_id}">ID</td>
+            <td th:text="${itemDetails.store_item.number_of_copies}">Title</td>
+            <td th:text="${itemDetails.store_item.price}">Price</td>
         </tr>
         </tbody>
     </table>
 </div>
 </body>
 </html>
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml"-->
+<!--      xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <title>Master Robot</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div align="center">-->
+<!--    <h1>Place Order</h1>-->
+<!--    <br />-->
+<!--    <form action="#" th:action="@{/save}" th:object="${comic}"-->
+<!--          method="post">-->
+
+<!--        <table border="0" cellpadding="10">-->
+<!--            <tr>-->
+<!--                <td>Item Name:</td>-->
+<!--                <td><input type="text" th:field="*{item}" /></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>Quantity:</td>-->
+<!--                <td><input type="text" th:field="*{quantity}" /></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td>Amount (USD):</td>-->
+<!--                <td><input type="text" th:field="*{amount}" /></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td colspan="2"><button type="submit">Save</button> </td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
