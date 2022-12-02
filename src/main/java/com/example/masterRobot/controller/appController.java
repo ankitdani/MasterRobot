@@ -1,20 +1,16 @@
 package com.example.masterRobot.controller;
 
-import com.example.masterRobot.entity.ComicBooks;
-import com.example.masterRobot.entity.CustOrder;
-import com.example.masterRobot.entity.store_items;
-import com.example.masterRobot.entity.CartoonMovies;
+import com.example.masterRobot.entity.*;
 import com.example.masterRobot.repository.storeItemRepository;
-import com.example.masterRobot.service.CartoonMoviesService;
-import com.example.masterRobot.service.ComicBooksService;
-import com.example.masterRobot.service.CustOrderService;
-import com.example.masterRobot.service.storeItemsService;
+import com.example.masterRobot.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +24,10 @@ public class appController {
     ComicBooksService comicBooksService;
     @Autowired
     CartoonMoviesService cartoonMoviesService;
+    @Autowired
+    CartItemService  cartItemService;
+    @Autowired
+    JdbcTemplate template;
 //    @GetMapping("/")
 //    public String display(){
 //        store_items store_item = new store_items(11, 1000, 2);
@@ -38,22 +38,28 @@ public class appController {
 //        return repo.findAll().stream().findFirst().toString();
 //    }
 
+
     class ItemDetails{
         public store_items storeItem;
         public ComicBooks comicBook;
         public CartoonMovies cartoonMovie;
 
+
+
         public ItemDetails(store_items storeItem, CartoonMovies cartoonMovie) {
             this.storeItem = storeItem;
             this.cartoonMovie = cartoonMovie;
+            this.comicBook = new ComicBooks();
         }
         public ItemDetails(store_items storeItem, ComicBooks comicBook) {
             this.storeItem = storeItem;
             this.comicBook = comicBook;
+            this.cartoonMovie = new CartoonMovies();
         }
     }
     @RequestMapping("/")
     public ModelAndView viewHomePage() {
+        CartItem cartItem = new CartItem();
         List<store_items> listItems = service.list();
         List<ComicBooks> listBooks = comicBooksService.listBooks();
         List<CartoonMovies> listMovies = cartoonMoviesService.listMovies();
@@ -88,10 +94,21 @@ public class appController {
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
+        modelAndView.addObject("cartItem", cartItem);
         modelAndView.addObject("itemDetailsList", itemDetailsList);
+        System.out.println("itemdetailslist - "+itemDetailsList.get(0));
         return modelAndView;
     }
-//    @RequestMapping("/")
+    @RequestMapping("/addToCart/{item_id}")
+    public void checkout(@ModelAttribute("cartItem") CartItem cartItem, @PathVariable long item_id) {
+        System.out.println(cartItem.getQuantity());
+        System.out.println(cartItem.getItem_id());
+        cartItem.setItem_id(item_id);
+        cartItem.setCust_id(10);
+        cartItemService.save(cartItem);
+
+    }
+        //RequestMappingappi
 //    public ModelAndView viewHomePage(Model model) {
 //        CustOrder custOrder = new CustOrder();
 //        List<ComicBooks> listBooks = comicBooksService.listBooks();
