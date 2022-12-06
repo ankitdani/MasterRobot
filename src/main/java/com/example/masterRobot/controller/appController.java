@@ -6,6 +6,7 @@ import com.example.masterRobot.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlParameterValue;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,7 +15,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@Controller
+@SessionAttributes({"currentCustomer"})
 public class appController {
     @Autowired
     storeItemRepository repo;
@@ -58,6 +60,19 @@ public class appController {
         }
     }
     @RequestMapping("/")
+    public ModelAndView viewLoginPage(){
+        ModelAndView mav = new ModelAndView();
+        CurrentCustomer currentCustomer=new CurrentCustomer();
+//        mav.addObject("currentCustomer",new Long());
+        mav.setViewName("login");
+        return mav;
+    }
+    @RequestMapping(value="/login", method = RequestMethod.POST)
+    public String login(@ModelAttribute("currentCustomer") CurrentCustomer currentCustomer){
+        System.out.println("cust id"+currentCustomer.getCust_id());
+        return "redirect:home";
+    }
+    @RequestMapping(value="/home", method = RequestMethod.GET)
     public ModelAndView viewHomePage() {
         CartItem cartItem = new CartItem();
         List<store_items> listItems = service.list();
@@ -100,14 +115,45 @@ public class appController {
         return modelAndView;
     }
     @RequestMapping("/addToCart/{item_id}")
-    public void checkout(@ModelAttribute("cartItem") CartItem cartItem, @PathVariable long item_id) {
-        System.out.println(cartItem.getQuantity());
+    public String checkout(@ModelAttribute("cartItem") CartItem cartItem, @PathVariable long item_id) {
         System.out.println(cartItem.getItem_id());
         cartItem.setItem_id(item_id);
-        cartItem.setCust_id(10);
-        cartItemService.save(cartItem);
+        cartItem.setCust_id(1000);
+        store_items s = service.get(item_id);
+        cartItem.setPrice(s.getPrice());
+        long price = s.getPrice();
+        cartItem.setTax(0.05*(price* cartItem.getQuantity()));
+        cartItem.setTotal((price* cartItem.getQuantity())+ cartItem.getTax());
+        cartItemService.saveCartItem(cartItem);
+        return "redirect:/home";
 
     }
+    @RequestMapping("/cart/{cust_id}")
+    public ModelAndView displayCart(@PathVariable long cust_id) {
+        System.out.println(cust_id);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("cart");
+        List<CartItem> cartItemList = cartItemService.listByCustId(cust_id);
+        modelAndView.addObject("cartItemsList",cartItemList);
+        return modelAndView;
+    }
+
+    @RequestMapping("/checkout/{cust_id}")
+    public String checkout(@PathVariable long cust_id){
+        //add to cust order and orderlineitems
+        //add to payment details
+        List<CartItem> cartItemsList = cartItemService.listByCustId(cust_id);
+        //create custorder
+
+        //create orderlineitems
+        //set shipping date
+        //compute total
+
+
+
+        return "orderPlaced";
+    }
+
         //RequestMappingappi
 //    public ModelAndView viewHomePage(Model model) {
 //        CustOrder custOrder = new CustOrder();

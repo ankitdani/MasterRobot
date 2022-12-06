@@ -8,7 +8,7 @@
 <body>
 <div align="center">
     <h1>Store Items</h1>
-    <a href="/new">Enter New Item</a>
+<!--    <a th:href="/@{/cart/1000}">Go to Cart</a>-->
     <br/><br/>
     <table border="1" cellpadding="10">
         <thead>
@@ -26,14 +26,14 @@
         <tbody>
         <tr th:each="itemDetails : ${itemDetailsList}">
 
-            <form action="#" th:action="@{'/addToCart/'+${itemDetails.storeItem.item_id}}" th:object="${cartItem}" method="get">
-                <td th:text="${itemDetails.storeItem.item_id}?${itemDetails.storeItem.item_id}:'UNKNOWN'" th:field="*{item_id}"></td>
+            <form action="#" th:action="@{'/addToCart/'+${itemDetails.storeItem.item_id}}" th:object="${cartItem}">
+                <td th:text="${itemDetails.storeItem.item_id}?${itemDetails.storeItem.item_id}:'-'" th:field="*{item_id}"></td>
                 <td th:text="${itemDetails.cartoonMovie.title}?${itemDetails.cartoonMovie.title}:${itemDetails.comicBook.title}"></td>
-                <td th:text="${itemDetails.comicBook.published_date}?${itemDetails.comicBook.published_date}:'UNKNOWN'"></td>
-                <td th:text="${itemDetails.cartoonMovie.stuioName}?${itemDetails.cartoonMovie.stuioName}:'UNKNOWN'"></td>
-                <td th:text="${itemDetails.cartoonMovie.description}?${itemDetails.cartoonMovie.description}:'NULL'"></td>
-                <td th:text="${itemDetails.storeItem.price}?${itemDetails.storeItem.price}:'UNKNOWN'"></td>
-                <td th:text="${itemDetails.storeItem.number_of_copies}?${itemDetails.storeItem.number_of_copies}:'UNKNOWN'"></td>
+                <td th:text="${itemDetails.comicBook.published_date}?${itemDetails.comicBook.published_date}:'-'"></td>
+                <td th:text="${itemDetails.cartoonMovie.stuioName}?${itemDetails.cartoonMovie.stuioName}:'-'"></td>
+                <td th:text="${itemDetails.cartoonMovie.description}?${itemDetails.cartoonMovie.description}:'-'"></td>
+                <td th:text="${itemDetails.storeItem.price}?${itemDetails.storeItem.price}:'-'" th:field="*{price}"></td>
+                <td th:text="${itemDetails.storeItem.number_of_copies}?${itemDetails.storeItem.number_of_copies}:'-'"></td>
                 <td><input type="range" min=0 th:max="${itemDetails.storeItem.number_of_copies}" th:field="*{quantity}" value="0" oninput="this.nextElementSibling.value = this.value"/><output>0</output></td>
                 <td><button type="submit">Add to cart</button></td>
             </form>
