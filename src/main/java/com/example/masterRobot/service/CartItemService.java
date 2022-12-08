@@ -69,4 +69,10 @@ public class CartItemService {
         System.out.println("CartItems listByCustId "+listCartItems);
         return listCartItems;
     }
+
+    public double getTotalByCustId(long cust_id){
+        String sql = "SELECT SUM(total) FROM cart_items WHERE cust_id="+cust_id;
+        System.out.println("In getTotalByCustId, cust id-"+cust_id+"\nSQL - "+sql);
+        return jdbcTemplate.queryForObject(sql, Double.class);
+    }
 }

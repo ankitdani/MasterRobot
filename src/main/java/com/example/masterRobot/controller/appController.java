@@ -11,12 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes({"currentCustomer"})
 public class appController {
     @Autowired
     storeItemRepository repo;
@@ -29,7 +29,13 @@ public class appController {
     @Autowired
     CartItemService  cartItemService;
     @Autowired
+    CustOrderService custOrderService;
+    @Autowired
     JdbcTemplate template;
+
+    long loggedInCustomerId=0;
+
+    CurrentCustomer currentCustomer=new CurrentCustomer();
 //    @GetMapping("/")
 //    public String display(){
 //        store_items store_item = new store_items(11, 1000, 2);
@@ -62,18 +68,25 @@ public class appController {
     @RequestMapping("/")
     public ModelAndView viewLoginPage(){
         ModelAndView mav = new ModelAndView();
-        CurrentCustomer currentCustomer=new CurrentCustomer();
-//        mav.addObject("currentCustomer",new Long());
+        mav.addObject("currentCustomer", currentCustomer);
         mav.setViewName("login");
         return mav;
     }
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public String login(@ModelAttribute("currentCustomer") CurrentCustomer currentCustomer){
         System.out.println("cust id"+currentCustomer.getCust_id());
+        loggedInCustomerId = currentCustomer.getCust_id();
+        this.currentCustomer.setCust_id(loggedInCustomerId);
         return "redirect:home";
     }
     @RequestMapping(value="/home", method = RequestMethod.GET)
     public ModelAndView viewHomePage() {
+        if(loggedInCustomerId==0){
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("login");
+            mav.addObject("currentCustomer", currentCustomer);
+            return mav;
+        }
         CartItem cartItem = new CartItem();
         List<store_items> listItems = service.list();
         List<ComicBooks> listBooks = comicBooksService.listBooks();
@@ -81,44 +94,34 @@ public class appController {
         int i=0,j=0,k=0;
         List<ItemDetails> itemDetailsList = new ArrayList<ItemDetails>();
         for(; i<listItems.size() && j<listBooks.size() && k<listMovies.size(); i++){
-            if(listItems.get(i).getItem_id()==listBooks.get(j).getItem_id()){
-                itemDetailsList.add(new ItemDetails(listItems.get(i), listBooks.get(j)));
-                j++;
-                continue;
+            for(ComicBooks book:listBooks){
+                if(book.getItem_id()==listItems.get(i).getItem_id())
+                    itemDetailsList.add(new ItemDetails(listItems.get(i), book));
             }
-            if(listItems.get(i).getItem_id()==listMovies.get(k).getItemId()){
-                itemDetailsList.add(new ItemDetails(listItems.get(i), listMovies.get(k)));
-                k++;
+            for(CartoonMovies movie: listMovies){
+                if(movie.getItemId()==listItems.get(i).getItem_id())
+                    itemDetailsList.add(new ItemDetails(listItems.get(i), movie));
+                System.out.println(movie.getStudioName());
             }
-        }
-        if(j==listBooks.size()){
-            for(;i<listItems.size() && k< listMovies.size();  i++){
-                if(listItems.get(i).getItem_id()==listMovies.get(k).getItemId()){
-                    itemDetailsList.add(new ItemDetails(listItems.get(i), listMovies.get(k)));
-                    k++;
-                }
-            }
-        }
-        if(k==listMovies.size()){
-            for(;i<listItems.size() && j< listBooks.size();  i++){
-                if(listItems.get(i).getItem_id()==listBooks.get(j).getItem_id()){
-                    itemDetailsList.add(new ItemDetails(listItems.get(i), listBooks.get(j)));
-                    j++;
-                }
-            }
+
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
         modelAndView.addObject("cartItem", cartItem);
         modelAndView.addObject("itemDetailsList", itemDetailsList);
+        modelAndView.addObject("currentCustomer", currentCustomer);
+        System.out.println("loggedInCustomerId-"+loggedInCustomerId);
         System.out.println("itemdetailslist - "+itemDetailsList.get(0));
+
+
         return modelAndView;
     }
     @RequestMapping("/addToCart/{item_id}")
     public String checkout(@ModelAttribute("cartItem") CartItem cartItem, @PathVariable long item_id) {
         System.out.println(cartItem.getItem_id());
         cartItem.setItem_id(item_id);
-        cartItem.setCust_id(1000);
+        cartItem.setCust_id(loggedInCustomerId);
+        System.out.println("loggedInCustomerId - "+loggedInCustomerId+" cartItem.getCust_id() - "+cartItem.getCust_id());
         store_items s = service.get(item_id);
         cartItem.setPrice(s.getPrice());
         long price = s.getPrice();
@@ -130,25 +133,80 @@ public class appController {
     }
     @RequestMapping("/cart/{cust_id}")
     public ModelAndView displayCart(@PathVariable long cust_id) {
+        if(loggedInCustomerId==0){
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("login");
+            mav.addObject("currentCustomer", currentCustomer);
+            return mav;
+        }
         System.out.println(cust_id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("cart");
         List<CartItem> cartItemList = cartItemService.listByCustId(cust_id);
         modelAndView.addObject("cartItemsList",cartItemList);
+        String custType = service.findCustomerType(cust_id);long shippingFee=10;
+
+        double totalWithTax = cartItemService.getTotalByCustId(cust_id);
+        double totalTax=0;
+        for(CartItem cartItem:cartItemList){
+            totalTax += cartItem.getTax();
+        }
+        double discount=0;
+        if(custType.equalsIgnoreCase("gold")){
+            shippingFee = 0;
+            if(totalWithTax-totalTax>100)
+                discount=0.1*(totalWithTax-totalTax);
+        }
+        double total = totalWithTax-totalTax;
+        double grandTotal = totalWithTax+shippingFee-discount;
+        modelAndView.addObject("total", total);
+        modelAndView.addObject("discount", discount);
+        modelAndView.addObject("grandTotal", grandTotal);
+        modelAndView.addObject("totalTax", totalTax);
+        modelAndView.addObject("shippingFee", shippingFee);
+        modelAndView.addObject("currentCustomer", currentCustomer);
+
         return modelAndView;
     }
 
     @RequestMapping("/checkout/{cust_id}")
     public String checkout(@PathVariable long cust_id){
+        System.out.println("In checkout");
         //add to cust order and orderlineitems
         //add to payment details
         List<CartItem> cartItemsList = cartItemService.listByCustId(cust_id);
-        //create custorder
+        //create custorder - createCustOrder
+        long orderId = service.createCustomerOrder();
+        String custType = service.findCustomerType(cust_id);
+        System.out.println(orderId);
+        Date dateOrdered = new java.util.Date();
+        long shippingFee=10;
+        if(custType.equalsIgnoreCase("gold")){
+            shippingFee = 0;
+        }
+        CustOrder custOrder = new CustOrder(orderId, cust_id, dateOrdered, dateOrdered, shippingFee, cartItemsList.size());
+        custOrderService.save(custOrder);
+//        //create orderlineitems - createOrderLineItems(custOrderId, itemid, customerId, dateordered, noOrdered, shippedDate)
+        for(CartItem cartItem : cartItemsList){
+            System.out.println(cartItem.getQuantity());
+            System.out.println(orderId+" ---- "+ cartItem.getItem_id()+" ---- "+ cust_id+" ---- "+ dateOrdered+" ---- "+ cartItem.getQuantity()+" ---- "+ dateOrdered);
+            long noOfCopies = service.findNumberOfCopies(cartItem.getItem_id());
+            //service.createOrderLineItem(orderId, cartItem.getCart_item_id(), cust_id, dateOrdered, cartItem.getQuantity(), dateOrdered, noOfCopies);
+            long updatedNoOfCopies = noOfCopies-cartItem.getQuantity();
+            System.out.println("updatedNoOfCopies-"+updatedNoOfCopies);
+            service.insertOrderLineItem(orderId, cartItem.getItem_id(), cartItemsList.indexOf(cartItem), cartItem.getQuantity());
+            service.updateNumberOfCopies(updatedNoOfCopies, cartItem.getItem_id());
+            System.out.println("Payment details - ");
+            System.out.println("Back to controller checkout");
+        }
 
-        //create orderlineitems
-        //set shipping date
+        service.computeTotal(orderId);
+//        long x = 5003;
+//        service.createOrderLineItem(x, 44, 1002, new Date(), 1, new Date());
+//        service.setShippingDate(5000, dateOrdered);
         //compute total
 
+        //double total = cartItemService.getTotalByCustId(cust_id);
 
 
         return "orderPlaced";

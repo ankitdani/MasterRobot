@@ -4,15 +4,17 @@
 <head>
     <meta charset="utf-8"/>
     <title>MasterRobot - Comic book store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
-<div align="center">
-    <h1>Cart Items</h1>
-<!--    <a href="/new">Enter New Item</a>-->
+<div align="center" class="container">
+    <h1>Master Robot Bookstore</h1>
+    <a href="/home">Home</a>
+    <h2>Cart Items</h2>
     <br/><br/>
-    <table border="1" cellpadding="10">
+    <table border="1" cellpadding="10" class="table">
         <thead>
-        <tr>
+        <tr class="table-dark">
             <th>Item ID</th>
             <th>Quantity</th>
             <th>Price per unit</th>
@@ -21,7 +23,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="cartItem : ${cartItemsList}">
+        <tr class="table-info" th:each="cartItem : ${cartItemsList}">
                 <td th:text="${cartItem.item_id}?${cartItem.item_id}:'-'" th:field="*{item_id}"></td>
                 <td th:text="${cartItem.quantity}?${cartItem.quantity}:'-'"></td>
                 <td th:text="${cartItem.price}?${cartItem.price}:'-'"></td>
@@ -30,7 +32,13 @@
         </tr>
         </tbody>
     </table>
-    <button th:href="@{/checkout}">Proceed to checkout</button>
+    <br/>
+    Total:<b><span th:text="${total}" style="font-size:32"></span></b><br/><br/>
+    Tax: <b><span th:text="${totalTax}" style="font-size:32"> </span></b><br/><br/>
+    Shipping fee: <b><span th:text="${shippingFee}" style="font-size:32"></span></b><br/><br/>
+    Discount: <b><span th:text="${discount}" style="font-size:32"></span></b><br/><br/>
+    Grand Total: <b><span th:text="${grandTotal}" style="font-size:52"></span></b><br/><br/>
+    <a class="btn btn-primary" role="button" th:href="@{|/checkout/${currentCustomer.cust_id}|}">Place Order</a></button>
 </div>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.example.masterRobot.service;
 
 import com.example.masterRobot.entity.CustOrder;
 import com.example.masterRobot.entity.store_items;
+import com.example.masterRobot.repository.CustOrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,11 +16,15 @@ public class CustOrderService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private CustOrderRepo repo;
+
 //        public List<store_items> list() {
 //            return null;
 //        }
 
     public void save(CustOrder custOrder) {
+        repo.save(custOrder);
     }
 
     public CustOrder get(long id) {

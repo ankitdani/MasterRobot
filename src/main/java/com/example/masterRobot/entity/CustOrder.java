@@ -1,10 +1,7 @@
 package com.example.masterRobot.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.sql.Date;
+import javax.persistence.*;
+import java.util.Date;
 @Entity
 @Table(name="cust_order")
 public class CustOrder {
@@ -12,19 +9,24 @@ public class CustOrder {
     @Column(name = "order_id", nullable = false)
     private long orderId;
     private long custId;
+    @Temporal(TemporalType.DATE)
     private Date dateOfOrder;
+    @Temporal(TemporalType.DATE)
     private Date shippedDate;
     private long shippingFee;
+    @Column(name="number_of_orderlineitems")
+    private long numberOfOrderLineItems;
 
     public CustOrder() {
     }
 
-    public CustOrder(long orderId, long custId, Date dateOfOrder, Date shippedDate, long shippingFee) {
+    public CustOrder(long orderId, long custId, Date dateOfOrder, Date shippedDate, long shippingFee, long numberOfOrderLineItems) {
         this.orderId = orderId;
         this.custId = custId;
         this.dateOfOrder = dateOfOrder;
         this.shippedDate = shippedDate;
         this.shippingFee = shippingFee;
+        this.numberOfOrderLineItems = numberOfOrderLineItems;
     }
 
     public long getOrderId() {

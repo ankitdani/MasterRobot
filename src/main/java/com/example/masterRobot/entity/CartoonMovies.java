@@ -12,7 +12,7 @@ public class CartoonMovies {
     private String title;
 
     @Column(name = "studio_name")
-    private String stuioName;
+    private String studioName;
 
     @Column(name = "description")
     private String description;
@@ -20,10 +20,10 @@ public class CartoonMovies {
     public CartoonMovies() {
     }
 
-    public CartoonMovies(long itemId, String title, String stuioName, String description) {
+    public CartoonMovies(long itemId, String title, String studioName, String description) {
         this.itemId = itemId;
         this.title = title;
-        this.stuioName = stuioName;
+        this.studioName = studioName;
         this.description = description;
     }
 
@@ -43,12 +43,12 @@ public class CartoonMovies {
         this.title = title;
     }
 
-    public String getStuioName() {
-        return stuioName;
+    public String getStudioName() {
+        return studioName;
     }
 
-    public void setStuioName(String stuioName) {
-        this.stuioName = stuioName;
+    public void setStudioName(String studioName) {
+        this.studioName = studioName;
     }
 
     public String getDescription() {
@@ -64,7 +64,7 @@ public class CartoonMovies {
         return "CartoonMovies{" +
                 "itemId=" + itemId +
                 ", title='" + title + '\'' +
-                ", stuioName='" + stuioName + '\'' +
+                ", stuioName='" + studioName + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }
