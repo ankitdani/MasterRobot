@@ -16,7 +16,7 @@ The process of translating the ER model to a relational model is shown by design
 
 Object-Oriented approach was used to create relations of sub-classes.
 
-Functional Dependencies;
+Functional Dependencies:
 1.	Store_items relation:
 a.	Item_id -> price, no_of_copies
 2.	Comic_books relation:
