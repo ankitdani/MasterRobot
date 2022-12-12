@@ -59,6 +59,3 @@ Working of the project:
 2.	The customer selects the items and the quantity that are available from the store.
 3.	Items are added to the cart.
 4.	Customer goes to the cart and places an order.
-
-
-![image](https://user-images.githubusercontent.com/32493050/207116258-5cfb2585-23ef-4be1-92ee-b23ff34b5b2f.png)
