@@ -12,7 +12,6 @@ Phase 3 - Unit testing - In progress.
 
 Entity Relationship model[https://github.com/Ajitesh-Sai/Master-Robot-Bookstore/blob/main/Untitled%20Diagram.drawio.png]
 
-
 The process of translating the ER model to a relational model is shown by designing a new diagram document named ‘Final entity design implementation.pdf’ which shows all the attributes in an entity with the constraints on each attribute. 
 
 Object-Oriented approach was used to create relations of sub-classes.
