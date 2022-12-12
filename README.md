@@ -8,7 +8,7 @@ Phase 2 - Implement a working prototype - in progress
 
 Phase 3 - Testing using Swagger 
 
-Entity Relationship model[hhttps://github.com/Ajitesh-Sai/Master-Robot-Bookstore/blob/main/Untitled%20Diagram.drawio.png]
+Entity Relationship model[https://github.com/Ajitesh-Sai/Master-Robot-Bookstore/blob/main/Untitled%20Diagram.drawio.png]
 
 
 The process of translating the ER model to a relational model is shown by designing a new diagram document named ‘Final entity design implementation.pdf’ which shows all the attributes in an entity with the constraints on each attribute. 
