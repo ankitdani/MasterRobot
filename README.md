@@ -1,6 +1,6 @@
 # MasterRobot - An online Comic book store
 
-Displays a list of books and movies based on the books for the customer to buy. 
+Thhe project displays a list of books and movies. A customer can order a list of items using a cart.
 
 Phase 1 - Schema design using Oracle - Complete
 
@@ -15,7 +15,7 @@ The process of translating the ER model to a relational model is shown by design
 
 Object-Oriented approach was used to create relations of sub-classes.
 
-Functional Dependencies-
+Functional Dependencies;
 1.	Store_items relation:
 a.	Item_id -> price, no_of_copies
 2.	Comic_books relation:
