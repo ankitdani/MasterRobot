@@ -4,9 +4,9 @@ The project displays a list of books and movies. A customer can order a list of 
 
 Phase 1 - Schema design using Oracle - Complete
 
-Phase 2 - Implement a working prototype - in progress
+Phase 2 - Implement a working prototype - Complete
 
-Phase 3 - Testing using Swagger 
+Phase 3 - Unit testing - In progress.
 
 Entity Relationship model[https://github.com/Ajitesh-Sai/Master-Robot-Bookstore/blob/main/Untitled%20Diagram.drawio.png]
 
