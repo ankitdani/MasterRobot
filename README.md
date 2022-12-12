@@ -1,6 +1,6 @@
 # MasterRobot - An online Comic book store
 
-Thhe project displays a list of books and movies. A customer can order a list of items using a cart.
+The project displays a list of books and movies. A customer can order a list of items using a cart.
 
 Phase 1 - Schema design using Oracle - Complete
 
