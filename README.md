@@ -2,7 +2,9 @@
 
 The project displays a list of books and movies. A customer can order a list of items using a cart.
 
-Phase 1 - Schema design using Oracle - Complete
+Stages of the project:
+
+Phase 1 - Desin a database schema - Complete
 
 Phase 2 - Implement a working prototype - Complete
 
