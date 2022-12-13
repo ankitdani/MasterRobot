@@ -4,7 +4,7 @@ The project displays a list of books and movies. A customer can order a list of 
 
 Stages of the project:
 
-Phase 1 - Desin a database schema - Complete
+Phase 1 - Design a database schema - Complete
 
 Phase 2 - Implement a working prototype - Complete
 
