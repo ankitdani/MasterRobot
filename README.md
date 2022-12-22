@@ -2,7 +2,7 @@
 
 The project displays a list of books and movies. A customer can order a list of items using a cart.
 
-Entity Relationship model[https://github.com/Ajitesh-Sai/Master-Robot-Bookstore/blob/main/Untitled%20Diagram.drawio.png]
+[Entity Relationship model](https://github.com/Ajitesh-Sai/Master-Robot-Bookstore/blob/main/Untitled%20Diagram.drawio.png)
 
 The process of translating the ER model to a relational database model is shown by designing a new diagram document named ‘Final entity design implementation.pdf’ which shows all the attributes in an entity with the constraints on each attribute. 
 
