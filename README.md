@@ -2,6 +2,9 @@
 
 The project displays a list of books and movies. A customer can order a list of items using a cart.
 
+### Tech stack used:
+Java Spring, oracle jdbc, maven, bootstrap,  junit, , postman
+
 [Entity Relationship model](https://github.com/Ajitesh-Sai/Master-Robot-Bookstore/blob/main/Untitled%20Diagram.drawio.png)
 
 ### Working of the project:
