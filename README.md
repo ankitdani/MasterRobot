@@ -2,19 +2,16 @@
 
 The project displays a list of books and movies. A customer can order a list of items using a cart.
 
-### Tech stack used:
-Java spring, oracle jdbc, maven, bootstrap,  junit, postman
-
 [Entity Relationship model](https://github.com/Ajitesh-Sai/Master-Robot-Bookstore/blob/main/Untitled%20Diagram.drawio.png)
 
-### Working of the project:
+## Working of the project:
 
 1.	The customer requires User Id to login. 
 2.	The customer selects the items and the quantity that are available from the store.
 3.	Items are added to the cart.
 4.	Customer goes to the cart and places an order.
 
-### Assumptions about the implemented design:
+## Assumptions about the implemented design:
 
 1.	If attributes are imported from superclass to subclass then these attributes are not mentioned in the subclass ER diagram but have been included during     the creation of subclass tables.
 2.	Attributes from weak entities are not mentioned in the ER diagram but are included during the creation of the table. 
@@ -25,7 +22,7 @@ Java spring, oracle jdbc, maven, bootstrap,  junit, postman
 7.	Comic movies do not have any published date.
 8.	Customers can see the grand total of the selected items and place orders but the payment gateway has not been implemented.
 
-### Constraints implemented:
+## Constraints implemented:
 
 1.	The custType of a customer can be of only one of the two values, namely, ‘regular’, or ’gold’.
 2.	Phone (or email) must be unique and not null.
